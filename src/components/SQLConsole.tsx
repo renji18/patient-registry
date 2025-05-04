@@ -1,7 +1,8 @@
 import {FormEvent, useEffect, useState} from 'react';
-import {BROADCAST_CHANNEL, BROADCAST_UPDATE_MESSAGE, runQuery} from "../utils/dbUtil.ts";
+import {BROADCAST_CHANNEL, BROADCAST_UPDATE_MESSAGE, TABLE_NAME} from "../utils/constants.ts";
+import {runQuery} from "../utils/dbUtil.ts";
 
-const FETCH_QUERY = 'SELECT * FROM patients;'
+const FETCH_QUERY = `SELECT * FROM ${TABLE_NAME};`
 
 export default function SQLConsole() {
   const [query, setQuery] = useState(FETCH_QUERY);

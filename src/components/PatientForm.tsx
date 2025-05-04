@@ -1,6 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import {toast} from "sonner";
 import {runQuery} from "../utils/dbUtil.ts";
+import {TABLE_NAME} from "../utils/constants.ts";
 
 export default function PatientForm() {
 
@@ -27,7 +28,8 @@ export default function PatientForm() {
     }
 
     const result = await runQuery(
-      'INSERT INTO patients (name, age, gender, contact) VALUES ($1, $2, $3, $4)',
+      `INSERT INTO ${TABLE_NAME} (name, age, gender, contact)
+       VALUES ($1, $2, $3, $4)`,
       [name, Number(age), gender, contact]
     );
 
