@@ -1,5 +1,5 @@
 import {FormEvent, useEffect, useState} from 'react';
-import {runQuery} from "../utils/dbUtil.ts";
+import {BROADCAST_CHANNEL, BROADCAST_UPDATE_MESSAGE, runQuery} from "../utils/dbUtil.ts";
 
 const FETCH_QUERY = 'SELECT * FROM patients;'
 
@@ -20,6 +20,20 @@ export default function SQLConsole() {
     }
     runFirstQuery();
   }, [])
+
+  useEffect(() => {
+    const channel = new BroadcastChannel(BROADCAST_CHANNEL);
+
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data?.type === BROADCAST_UPDATE_MESSAGE) {
+        const res = await runQuery(FETCH_QUERY);
+        setResults(res);
+      }
+    };
+
+    channel.addEventListener('message', handleMessage);
+    return () => channel.removeEventListener('message', handleMessage);
+  }, []);
 
   return (
     <div className="w-full max-w-4xl p-4 bg-white shadow rounded space-y-4">
